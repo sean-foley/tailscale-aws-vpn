@@ -2,6 +2,10 @@
 
 AWS CDK project that deploys a t4g.nano EC2 instance configured as a Tailscale exit node.
 
+## What is Tailscale?
+
+Tailscale is a zero-trust overlay encrypted overlay network.  Rather than having to setup VPNs tunnels, routing rules, etc. you simply add devices to your overlay network where they all peer.  The network is fully encrypted using Wireguard.  An exit node on a Tailscale network acts like a public endpoint where internal tailscale traffic egresses to the public Internet.  This is similar to a using a VPN, but will much less hassle.  
+
 ## What Gets Created
 
 - VPC with a public subnet (10.0.0.0/16)
