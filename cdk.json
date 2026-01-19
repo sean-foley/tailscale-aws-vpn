@@ -1,0 +1,25 @@
+{
+  "app": "python3 app.py",
+  "watch": {
+    "include": [
+      "**"
+    ],
+    "exclude": [
+      "README.md",
+      "cdk*.json",
+      "requirements*.txt",
+      "source.bat",
+      "**/__pycache__",
+      "**/*.pyc",
+      ".venv"
+    ]
+  },
+  "context": {
+    "@aws-cdk/aws-ec2:uniqueImdsv2TemplateName": true,
+    "@aws-cdk/core:checkSecretUsage": true,
+    "@aws-cdk/aws-iam:minimizePolicies": true,
+    "@aws-cdk/core:target-partitions": [
+      "aws"
+    ]
+  }
+}
