@@ -145,5 +145,10 @@ cdk destroy
 - Check: `cat /var/log/tailscale-setup-complete`
 - Check Tailscale status: `sudo tailscale status`
 
+**Tailscale updates?**
+- Auto-update is enabled at boot (`tailscale set --auto-update`), so Tailscale upgrades itself via dnf
+- Check: `tailscale version` and `tailscale debug prefs | grep -A3 AutoUpdate`
+- On instances deployed before this was added, run `sudo tailscale set --auto-update` once
+
 **Update home IP?**
 - Redeploy with new IP: `cdk deploy -c home_ip=NEW_IP`

@@ -66,6 +66,13 @@ class TailscaleExitNodeStack(Stack):
             "#!/bin/bash",
             "set -e",
             "",
+            "# Add a 1GB swap file: t4g.nano has 512MB RAM and dnf gets OOM-killed without it",
+            "dd if=/dev/zero of=/swapfile bs=1M count=1024",
+            "chmod 600 /swapfile",
+            "mkswap /swapfile",
+            "swapon /swapfile",
+            "echo '/swapfile swap swap defaults 0 0' >> /etc/fstab",
+            "",
             "# Install Tailscale",
             "dnf config-manager --add-repo https://pkgs.tailscale.com/stable/amazon-linux/2023/tailscale.repo",
             "dnf install tailscale -y",
@@ -77,6 +84,9 @@ class TailscaleExitNodeStack(Stack):
             "echo 'net.ipv4.ip_forward = 1' > /etc/sysctl.d/99-tailscale.conf",
             "echo 'net.ipv6.conf.all.forwarding = 1' >> /etc/sysctl.d/99-tailscale.conf",
             "sysctl -p /etc/sysctl.d/99-tailscale.conf",
+            "",
+            "# Let Tailscale keep itself up to date (installs updates via dnf)",
+            "tailscale set --auto-update",
             "",
             "# Marker file indicating setup is complete",
             "touch /var/log/tailscale-setup-complete",
@@ -110,6 +120,8 @@ class TailscaleExitNodeStack(Stack):
             security_group=security_group,
             key_pair=key_pair,
             user_data=user_data,
+            # User data only runs on first boot, so changes must restack the instance
+            user_data_causes_replacement=True,
             # Require IMDSv2 for better security
             require_imdsv2=True,
         )
